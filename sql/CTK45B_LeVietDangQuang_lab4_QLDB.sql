@@ -136,7 +136,7 @@ Where	BAO_TCHI.MaBaoTC = DATBAO.MaBaoTC  and
 						From	BAO_TCHI E, DATBAO F
 						Where	BAO_TCHI.MaBaoTC = DATBAO.MaBaoTC )
 --13)
-select TenKH, DiaChi
+select DISTINCT TenKH, DiaChi
 from KHACHHANG,DATBAO
 where KHACHHANG.MaKH=DATBAO.MaKH and DATBAO.SLMua = (Select Max(F.SLMua)
 						From	KHACHHANG E, DATBAO F
