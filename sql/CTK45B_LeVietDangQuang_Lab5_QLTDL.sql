@@ -126,36 +126,4 @@ from Lich_TourDL
 group by MaTour,NgayKH,TenHDV,TenKH,SoNguoi
 
 						
---10)
-select * from BAO_TCHI A
-where A.MaBaoTC like '%HS'
---11)
-select	*
-From	BAO_TCHI 
-Where	MaBaoTC NOT IN (Select	    A.MaBaoTC
-						From	DATBAO A,KHACHHANG b
-						Where	A.MaKH = B.MaKH)
-
---12)
-select Ten,DinhKy
-from BAO_TCHI,DATBAO
-Where	BAO_TCHI.MaBaoTC = DATBAO.MaBaoTC  and
-		DATBAO.SLMua = (Select Max(F.SLMua)
-						From	BAO_TCHI E, DATBAO F
-						Where	BAO_TCHI.MaBaoTC = DATBAO.MaBaoTC )
---13)
-select DISTINCT TenKH, DiaChi
-from KHACHHANG,DATBAO
-where KHACHHANG.MaKH=DATBAO.MaKH and DATBAO.SLMua = (Select Max(F.SLMua)
-						From	KHACHHANG E, DATBAO F
-						Where	E.MaKH=F.MaKH )
---14)
-select MaBaoTC,GiaBan
-from BAO_TCHI
-where BAO_TCHI.DinhKy = N'Bán Nguyệt San'
---15)
-Select	 a.MaBaoTC,ten, COUNT( c.MaKH) As SanPham
-From	BAO_TCHI A, DATBAO C
-Where	A.MaBaoTC = C.MaBaoTC
-Group by	A.MaBaoTC, Ten
-Having	COUNT( DISTINCT MaKH) >= 3
+--j)
