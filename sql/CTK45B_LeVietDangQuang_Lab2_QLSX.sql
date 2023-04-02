@@ -148,6 +148,123 @@ select * from SanPham
 --13)
 
 INSERT INTO CongNhan(MACN,Ho,Ten,Phai,NgaySinh,MaTSX) VALUES ( 'CN006',N'Lê Thị',N'Lan',N'Nữ',Null,N'TS02')
+--Aa
+create function fn_TongCongNhan1To(@Matsx char(5)) returns int
+As
+Begin
+	declare @TongCongNhan int
+	if exists (select * from ToSanXuat where MaTSX = @Matsx) 
+		Begin
 
+		select @TongCongNhan = count(MACN)
+		from	ToSanXuat A, CongNhan B	
+		where	A.MaTSX = B.MaTSX and B.MaTSX = @Matsx
+		End	
+	 	
+return  @TongCongNhan
+End
+--- thử nghiệm hàm-------
+print dbo.fn_TongCongNhan1To('TS01')
+print dbo.fn_TongCongNhan1To('TS02')
+--Ab
+create function fn_TongThanhPham1Thang(@MaSP char(6),@bd datetime,@kt datetime) returns int
+As
+Begin
+	declare @TongThanhPham int
+	if exists (select * from ThanhPham where MASP = @MaSP) 
+		Begin
+		
+		select @TongThanhPham = sum(SoLuong)
+		from	SanPham A, ThanhPham B	
+		where	A.MASP = B.MASP	 and B.MASP = @MaSP and Ngay between @bd and @kt
+		End	
+	 	
+return   @TongThanhPham 
+End
+--- thử nghiệm hàm------- 
+set dateformat dmy
+print dbo.fn_TongThanhPham1Thang('SP001','1/2/2007','28/2/2007')
+--Ac
+create function fn_TongTienCong1Thang(@maCN char(6),@bd datetime,@kt datetime) returns int
+As
+Begin
+	declare @TongTienCong int
+	if exists (select * from ThanhPham where MACN = @maCN) 
+		Begin
+		
+		select @TongTienCong = sum(SoLuong* TienCong)
+		from	CongNhan A, ThanhPham B	,SanPham C
+		where	A.MACN = B.MACN	 and B.MASP = C.MASP and B.MACN = @maCN and Ngay between @bd and @kt
+		End	
+	 	
+return  @TongTienCong
+End
+--- thử nghiệm hàm------- 
+set dateformat dmy
+print dbo.fn_TongTienCong1Thang('CN001','1/2/2007','28/2/2007')
+--Ad
+create function fn_TongThuNhap1Nam(@maTSX char(5),@bd datetime,@kt datetime) returns int
+As
+Begin
+	declare @TongThuNhap int
+	if exists (select * from ToSanXuat where MaTSX = @maTSX) 
+		Begin
+		
+		select @TongThuNhap = sum(SoLuong* TienCong)
+		from	ToSanXuat A , ThanhPham B	,SanPham C , CongNhan D
+		where A.MaTSX = D.MaTSX and b.MASP = C.MASP and  D.MACN = B.MACN and A.MaTSX = @maTSX and Ngay between   @bd and @kt
+		End	
+	 	
+return  @TongThuNhap
+End
+--- thử nghiệm hàm------- 
+set dateformat dmy
+print dbo.fn_TongThuNhap1Nam('TS01','1/1/2007','30/12/2007')
+--Ae
+ create function fn_TongSanLuongTrong1ThoiGian(@MaSP char(6) ,@bd datetime, @kt datetime) returns int
+ as
+ begin
+	declare @TongSanLuong int
+		if exists (select * from SanPham where MASP = @MaSP) 
+	begin
+		select @TongSanLuong = sum(SoLuong) 
+		from ThanhPham B
+		where B.MASP =@MaSP and Ngay between @bd and @kt
+	end
+	return @TongSanLuong
+ end
 
+ print dbo.fn_TongSanLuongTrong1ThoiGian('SP001','01/02/2007','14/02/2007')
+ --Ba)
+ create proc usp_InDanhSachCongNhan
+ @MaTSX char(5) 
+ as
+ begin
+	if exists(select * from CongNhan where MaTSX = @MaTSX)
+		begin 
+			select * 
+			from CongNhan A
+			where A.MaTSX = @MaTSX
+		end
+	else 
+		print N'Tổ sản xuất không tồn tại'
+ end
 
+ exec usp_InDanhSachCongNhan 'TS01'
+  exec usp_InDanhSachCongNhan 'TS02'
+  --Bb)
+   create proc usp_InBangChamCong 
+@MaCN char(5)
+ as
+ begin
+	if exists(select * from CongNhan where MaCN = @MaCN)
+		begin 
+			select TenSP, DVT, SoLuong, TienCong, (SoLuong * TienCong) as ThanhTien
+			from SanPham A, ThanhPham B
+			where A.MaSP = B.MaSP and MaCN = @MaCN
+		end
+	else 
+		print N'Công nhân không tồn tại'
+ end
+
+ exec usp_InBangChamCong 'CN001' 
