@@ -151,3 +151,39 @@ From	BAO_TCHI A, DATBAO C
 Where	A.MaBaoTC = C.MaBaoTC
 Group by	A.MaBaoTC, Ten
 Having	COUNT( DISTINCT MaKH) >= 3
+
+--Aa
+create function fn_TongTienMua(@MaKh char(5)) returns int
+As
+Begin
+	declare @TongTienMua int
+	if exists (select * from KHACHHANG where MaKH = @MaKh) 
+		Begin
+
+		select @TongTienMua = sum(SLMua * GiaBan)
+		from	BAO_TCHI A, DATBAO B	
+		where	A.MaBaoTC = B.MaBaoTC and B.MaKH = @MaKh
+		End	
+	 	
+return @TongTienMua
+End
+--- thử nghiệm hàm-------
+print dbo.fn_TongTienMua('KH01')
+
+--Ab
+create function fn_TongTienThu(@MaBaoTapChi char(5)) returns int
+As
+Begin
+	declare @TongTienThu int
+	if exists (select * from BAO_TCHI where MaBaoTC = @MaBaoTapChi) 
+		Begin
+		
+		select @TongTienThu = sum(SLMua * GiaBan)
+		from	BAO_TCHI A, DATBAO B	
+		where	A.MaBaoTC = B.MaBaoTC and A.MaBaoTC = @MaBaoTapChi
+		End	
+	 	
+return @TongTienThu
+End
+--- thử nghiệm hàm-------
+print dbo.fn_TongTienThu('TT01')
