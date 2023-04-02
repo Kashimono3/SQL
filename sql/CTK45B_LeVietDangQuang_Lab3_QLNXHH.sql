@@ -251,3 +251,88 @@ having count (CT_HoaDon.Soluong)>= all
 (select count(CT_HoaDon.Soluong) from CT_HoaDon , HoaDon  , HangHoa
 where HoaDon.SOHD= CT_HoaDon.SOHD and HangHoa.MAHH = CT_HoaDon.MAHH
 group by HangHoa.MAHH,TenHH)
+--21)
+
+--Aa
+create function fn_TongSoLuongNhap(@bd datetime,@kt datetime) returns int
+As
+Begin
+	declare @TongSoLuongNhap int
+	
+	select  @TongSoLuongNhap = sum(SoLuong)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%N%' and NgayLapHD between @bd and @kt
+return @TongSoLuongNhap
+End
+--- thu nghiem ham-------
+set dateformat dmy
+print dbo.fn_TongSoLuongNhap('1/1/2006','15/7/2006')
+--Ab
+create function fn_TongSoLuongXuat(@bd datetime,@kt datetime) returns int
+As
+Begin
+	declare @TongSoLuongXuat int
+	
+	select  @TongSoLuongXuat = sum(SoLuong)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%X%' and NgayLapHD between @bd and @kt
+return  @TongSoLuongXuat
+End
+--- thu nghiem ham-------
+set dateformat dmy
+print dbo.fn_TongSoLuongXuat('1/1/2006','15/7/2006')
+--Ac
+create function fn_TongDoanhThu(@thang int) returns int
+As
+Begin
+	declare @TongDoanhThu int
+	
+	select  @TongDoanhThu = sum(SoLuong*DonGia)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%X%' and Month(NgayLapHD)= @thang
+return  @TongDoanhThu
+End
+--- thu nghiem ham-------
+set dateformat dmy
+print dbo.fn_TongDoanhThu(6)
+--Ad
+create function fn_TongDoanhThuMotMatHang(@Mahh char (6),@bd datetime ,@kt datetime) returns int
+As
+Begin
+	declare @TongDoanhThuHang int
+	
+	select @TongDoanhThuHang = sum(SoLuong*DonGia)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%X%' and A.MAHH = @Mahh and NgayLapHD  between @bd and @kt
+return  @TongDoanhThuHang
+End
+--- thu nghiem ham-------
+set dateformat dmy
+print dbo.fn_TongDoanhThuMotMatHang('CPU01','1/4/2006','30/6/2006')
+--Ae
+create function fn_TongTienNhapHangTrongThoiGianChoTruoc(@bd datetime ,@kt datetime) returns int
+As
+Begin
+	declare @TongTienNhapHang int
+	
+	select @TongTienNhapHang  = sum(SoLuong*DonGia)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%N%'and NgayLapHD  between @bd and @kt
+return  @TongTienNhapHang 
+End
+--- thu nghiem ham-------
+set dateformat dmy
+print dbo.fn_TongTienNhapHangTrongThoiGianChoTruoc('1/1/2006','30/1/2006')
+--Af
+create function fn_TongTienHoaDon(@SoHd char(6)) returns int
+As
+Begin
+	declare @TongTienHoaDon int
+	if exists (select * from HoaDon where SOHD = @SoHd) 
+	select @TongTienHoaDon = sum(SoLuong*DonGia)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD = @SoHd
+return  @TongTienHoaDon 
+End
+--- thu nghiem ham-------
+print dbo.fn_TongTienHoaDon('X0003')
