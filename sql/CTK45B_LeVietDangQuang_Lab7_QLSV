@@ -172,11 +172,11 @@ from SinhVien A
 where A.MSSV not in 
 (select A.MSSV
 from SinhVien A
-where A.DienThoai = '')
+where A.DienThoai = '' )
 --7)
 select *
 from SinhVien A
-where A.MSSV not in 
+where A.DienThoai  LIKE '0%' and A.MSSV not in 
 (select A.MSSV
 from SinhVien A
 where A.DienThoai = '')
@@ -197,15 +197,15 @@ select A.MSSV, A.Ho +' ' +A.Ten as HoTen, datediff(yy,A.NgaySinh,A.NgayNhapHoc) 
 from SinhVien A, Tinh B
 where A.MSTinh = B.MSTinh and B.TenTinh = N'Long An'
 --12)
-select *
+select  A.MSSV, A.Ho +' ' +A.Ten as HoTen, datediff(yy,A.NgaySinh,A.NgayNhapHoc) as Tuoi
 from SinhVien A
-where datediff(yy,A.NgaySinh,A.NgayNhapHoc) >= 23 and datediff(yy,A.NgaySinh,A.NgayNhapHoc) <= 28 and A.Phai = 'Yes'
+where datediff(yy,A.NgaySinh,A.NgayNhapHoc) > 23 and datediff(yy,A.NgaySinh,A.NgayNhapHoc) < 28 and A.Phai = 'Yes'
 --13)
 select *
 from SinhVien A
 where datediff(yy,A.NgaySinh,A.NgayNhapHoc) >=
 Case when A.Phai = 'Yes' then 32
-	when A.Phai = 'No' then 27
+	when A.Phai = 'No' then 26
 end; 
 --14)
 select *
