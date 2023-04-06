@@ -3,268 +3,386 @@
    MSSV: 2111875
    Lớp: CTK45B
    Ngày bắt đầu: 23/02/2023
-   Ngày kết thúc: ?????
+   Ngày kết 
+   thúc: ?????
 */	
 ----------ĐỊNH NGHĨA CƠ SỞ DỮ LIỆU----------------
-CREATE DATABASE Lab2_QuanLySanXuat
+CREATE DATABASE Lab3_QuanLyNhapXuatHangHoa
 go
-use Lab2_QuanLySanXuat
+use Lab3_QuanLyNhapXuatHangHoa
 go
-create table ToSanXuat
-(MaTSX char (5) primary key,
-TenTSX Nvarchar (10)
-)
-go
-create table CongNhan
-(MACN char(6) primary key,
-Ho Nvarchar (20) ,
-Ten Nvarchar (10),
-Phai Nvarchar (5),
-NgaySinh Datetime,
-MaTSX char(5) references ToSanXuat(MaTSX)
-
-)
-go
-create table SanPham
-(MASP char(6) primary key,
-TenSP Nvarchar (20),
+create table HangHoa
+(MAHH char (6) primary key,
+TenHH Nvarchar (40),
 DVT Nvarchar (10),
-TienCong int
+SoLuongTon int
+
 )
 go
-create table ThanhPham
-(MACN char(6) references CongNhan(MACN),
-MASP char (6) references SanPham(MASP),
-Ngay datetime,
-SoLuong int
+create table DoiTac
+(MADT char(6) primary key,
+Ten Nvarchar (30),
+DiaChi Nvarchar (50),
+DienThoai char(10)
+)
+go
+create table HoaDon
+(SOHD char(6) primary key,
+NgayLapHD datetime,
+MADT char (6) references DoiTac(MADT),
+
+)
+go
+create table KhaNangCC
+(MADT char(6) references DoiTac(MADT),
+MAHH char (6) references HangHoa(MAHH),
+)
+go
+create table CT_HoaDon
+(SOHD char(6) references HoaDON(SOHD),
+MAHH char (6) references HangHoa(MAHH),
+DonGia int,
+Soluong int
 )
 go
 
-insert into ToSanXuat values('TS01',N'Tổ 1')
-insert into ToSanXuat values ('TS02',N'Tổ 2')
 
-insert into SanPham values ('SP001',N'Nồi đất',N'cái',10000)
-insert into SanPham values ('SP002',N'Chén',N'cái',2000)
-insert into SanPham values ('SP003',N'Bình gốm nhỏ',N'cái',20000)
-insert into SanPham values ('SP004',N'Bình gốm lớn',N'cái',25000)
+insert into HangHoa values('CPU01','CPU INTEL,CELERON 600 BOX',N'Cái',5)
+insert into HangHoa values('CPU02','CPU INTEL,PIII 700',N'Cái',10)
+insert into HangHoa values('CPU03','CPU AMD K7 ATHL,ON 600',N'Cái',8)
+insert into HangHoa values('HDD01','HDD 10.2 GB QUANTUM',N'Cái',10)
+insert into HangHoa values('HDD02','HDD 13.6 GB SEAGATE',N'Cái',15)
+insert into HangHoa values('HDD03','HDD 20 GB QUANTUM',N'Cái',6)
+insert into HangHoa values('KB01','KB GENIUS',N'Cái',12)
+insert into HangHoa values('KB02','KB MITSUMIMI',N'Cái',5)
+insert into HangHoa values('MB01','GIGABYTE CHIPSET INTEL',N'Cái',10)
+insert into HangHoa values('MB02','ACOPR BX CHIPSET VIA',N'Cái',10)
+insert into HangHoa values('MB03','INTEL PHI CHIPSET INTEL',N'Cái',10)
+insert into HangHoa values('MB04','ECS CHIPSET SIS',N'Cái',10)
+insert into HangHoa values('MB05','ECS CHIPSET VIA',N'Cái',10)
+insert into HangHoa values('MNT01','SAMSUNG 14" SYNCMASTER',N'Cái',5)
+insert into HangHoa values('MNT02','LG 14" ',N'Cái',5)
+insert into HangHoa values('MNT03','ACER 14" ',N'Cái',8)
+insert into HangHoa values('MNT04','PHILIPS 14" ',N'Cái',6)
+insert into HangHoa values('MNT05','VIEWSONIC 14" ',N'Cái',7)
+
+
+
+
+insert into DoiTac values ('CC001',N'Cty TNC',N'176 BTX Q1- TP.HCM','088250259') 
+insert into DoiTac values ('CC002',N'Cty Hoàng Long',N'15A TTT Q1- TP.HCM','088250898') 
+insert into DoiTac values ('CC003',N'Cty Hợp Nhất',N'152 BTX Q1- TP.HCM','088252376') 
+insert into DoiTac values ('K0001',N'Nguyễn Minh Hải',N'91 Nguyễn Văn Trỗi TP.Đà lạt','063831129')
+insert into DoiTac values ('K0002',N'Như Quỳnh',N'21 Điện Biên Phủ Nha Trang','058590270')
+insert into DoiTac values ('K0003',N'Trần Nhật Duật',N' Lê Lợi TP.Huế','054848376')
+insert into DoiTac values ('K0004',N'Phan Nguyễn Hùng Anh',N'11 Nam Kỳ Khởi Nghĩa TP.Đà lạt','063823409')
 
 set dateformat dmy 
-insert into CongNhan values ('CN001',N'Nguyễn Trường',N'An',N'Nam','12/05/1981',N'TS01')
-insert into CongNhan values ('CN002',N'Lê Thị Hồng ',N'Gấm',N'Nữ','04/06/1980',N'TS01')
-insert into CongNhan values ('CN003',N'Nguyễn Công',N'Thành',N'Nam','04/05/1981',N'TS02')
-insert into CongNhan values ('CN004',N'Võ Hữu',N'Hạnh',N'Nam','15/02/1980',N'TS02')
-insert into CongNhan values ('CN005',N'Lý Thanh',N'Hân',N'Nữ','03/12/1981',N'TS01')
+insert into HoaDon values ('N0001','25/01/2006',N'CC001')
+insert into HoaDon values ('N0002','01/05/2006',N'CC002')
+insert into HoaDon values ('X0001','12/05/2006',N'K0001')
+insert into HoaDon values ('X0002','16/06/2006',N'K0002')
+insert into HoaDon values ('X0003','20/04/2006',N'K0003')
 
-insert into ThanhPham values ('CN001',N'SP001','01/02/2007',10)
-insert into ThanhPham values ('CN002',N'SP001','01/02/2007',5)
-insert into ThanhPham values ('CN003',N'SP002','10/01/2007',50)
-insert into ThanhPham values ('CN004',N'SP003','12/01/2007',10)
-insert into ThanhPham values ('CN005',N'SP002','12/01/2007',100)
-insert into ThanhPham values ('CN002',N'SP004','13/02/2007',10)
-insert into ThanhPham values ('CN001',N'SP003','14/02/2007',15)
-insert into ThanhPham values ('CN003',N'SP001','15/01/2007',20)
-insert into ThanhPham values ('CN003',N'SP004','14/02/2007',15)
-insert into ThanhPham values ('CN004',N'SP002','30/01/2007',100)
-insert into ThanhPham values ('CN005',N'SP003','01/02/2007',50)
-insert into ThanhPham values ('CN001',N'SP001','20/02/2007',30)
+insert into KhaNangCC values ('CC001',N'CPU01')
+insert into KhaNangCC values ('CC001',N'HDD03')
+insert into KhaNangCC values ('CC001',N'KB01')
+insert into KhaNangCC values ('CC001',N'MB02')
+insert into KhaNangCC values ('CC001',N'MB04')
+insert into KhaNangCC values ('CC001',N'MNT01')
+insert into KhaNangCC values ('CC002',N'CPU01')
+insert into KhaNangCC values ('CC002',N'CPU02')
+insert into KhaNangCC values ('CC002',N'CPU03')
+insert into KhaNangCC values ('CC002',N'KB02')
+insert into KhaNangCC values ('CC002',N'MB01')
+insert into KhaNangCC values ('CC002',N'MB05')
+insert into KhaNangCC values ('CC002',N'MNT03')
+insert into KhaNangCC values ('CC003',N'HDD01')
+insert into KhaNangCC values ('CC003',N'HDD02')
+insert into KhaNangCC values ('CC003',N'HDD03')
+insert into KhaNangCC values ('CC003',N'MB03')
 
-select * from ToSanXuat
-select * from CongNhan
-select * from SanPham
-select * from ThanhPham
+
+
+insert into CT_HoaDon values ('N0001',N'CPU01',63,10)
+insert into CT_HoaDon values ('N0001',N'HDD03',97,7)
+insert into CT_HoaDon values ('N0001',N'KB01',3,5)
+insert into CT_HoaDon values ('N0001',N'MB02',57,5)
+insert into CT_HoaDon values ('N0001',N'MNT01',112,3)
+insert into CT_HoaDon values ('N0002',N'CPU02',115,3)
+insert into CT_HoaDon values ('N0002',N'KB02',5,7)
+insert into CT_HoaDon values ('N0002',N'MNT03',111,5)
+insert into CT_HoaDon values ('X0001',N'CPU01',67,2)
+insert into CT_HoaDon values ('X0001',N'HDD03',100,2)
+insert into CT_HoaDon values ('X0001',N'KB01',5,2)
+insert into CT_HoaDon values ('X0001',N'MB02',62,1)
+insert into CT_HoaDon values ('X0002',N'CPU01',67,1)
+insert into CT_HoaDon values ('X0002',N'KB02',7,3)
+insert into CT_HoaDon values ('X0002',N'MNT01',115,2)
+insert into CT_HoaDon values ('X0003',N'CPU01',67,1)
+insert into CT_HoaDon values ('X0003',N'MNT03',115,2)
+
+alter table HoaDon add TongTG int
+select * from HangHoa
+select * from DoiTac
+select * from HoaDon
+select * from KhaNangCC
+select * from CT_HoaDon
 
 --1)
-select TenTSX,Ho+' ' +Ten as HoTen,NgaySinh,Phai
-from CongNhan,ToSanXuat
-where CongNhan.MaTSX = ToSanXuat.MaTSX
-order by TenTSX,Ten
+select *from HangHoa
+where TenHH like N'HDD%'
+
 --2)
-select TenSP,Ngay, SoLuong,TienCong as ThanhTien
-from CongNhan,SanPham,ThanhPham
-where CongNhan.MACN= ThanhPham.MACN and SanPham.MASP =ThanhPham.MASP and CongNhan.Ho + ' ' + CongNhan.Ten =N'Nguyễn Trường An'
-order by Ngay
+select *
+ from HangHoa
+where  SoLuongTon>10
 --3)
-Select	*
-From	CongNhan 
-Where	MACN NOT IN (	Select	A.MACN
-						From	ThanhPham A, SanPham B
-						Where	A.MASP = B.MASP and B.TenSP =N'Bình gốm lớn')
+select * from DoiTac
+where DiaChi like N'%HCM%'
 --4)
-Select	B.MACN, Ho +' '+Ten as HoTen,NgaySinh,Phai
-From	 CongNhan B, SanPham C, ThanhPham D
-Where	B.MACN = D.MACN and C.MASP = D.MASP 
-		and C.TenSP = N'Nồi đất' and B.MACN IN (Select	E.MACN
-											From	ThanhPham E, SanPham F
-											Where	E.MASP = F.MASP and F.TenSP =N'Bình gốm nhỏ')
+select HoaDon.SOHD,NgayLapHD,Ten,DiaChi,DienThoai,MAHH as SoMatHang
+from DoiTac,HoaDon,CT_HoaDon
+where DoiTac.MADT=HoaDon.MADT and MONTH(NgayLapHD) = 5 and YEAR(NgayLapHD)=2006 and HoaDon.SOHD=CT_HoaDon.SOHD 
 --5)
-select TenTSX,COUNT(MACN)as SoLuong
-from CongNhan,ToSanXuat
-where CongNhan.MaTSX= ToSanXuat.MaTSX
-group By TenTSX
+select DISTINCT Ten,DiaChi,DienThoai
+from DoiTac,HangHoa,KhaNangCC
+where DoiTac.MADT= KhaNangCC.MADT and HangHoa.MAHH = KhaNangCC.MAHH and TenHH like N'HDD%'
 --6)
-select Ho,Ten,TenSP,sum(SoLuong) as TongSLSanPham,SoLuong*TienCong as TongThanhTien
-From CongNhan,SanPham,ThanhPham
-where CongNhan.MACN=ThanhPham.MACN and SanPham.MASP=ThanhPham.MASP
-group by Ho,Ten,TenSp,SoLuong,TienCong
+Select		A.MADT, Ten, count(MaHH) as tatcadiacung
+From		DoiTac A, KhaNangCC B
+Where		A.MADT = B.MADT
+Group by	A.MADT,Ten, MAHH
+Having		count(MAHH) = (	select	count(MAHH)
+							From	HangHoa 
+							where MAHH like 'HDD%')
 --7)
-select Ho+' '+ten as Hoten, Ngay, sum(SoLuong) as TongSLSanPham,SoLuong*TienCong as TongThanhTien
-From CongNhan,SanPham,ThanhPham
-where CongNhan.MACN=ThanhPham.MACN and SanPham.MASP=ThanhPham.MASP and MONTH(Ngay)=1 and YEAR(Ngay)=2007
-group by Ho,Ten,Ngay,SoLuong,TienCong
+Select	*
+From	DoiTac 
+Where	MADT NOT IN (	Select	A.MaDT
+						From	DoiTac A, KhaNangCC B
+						Where	A.MADT = B.MADT and  MAHH like 'HDD%')
 --8)
-select  SanPham.MASP,TenSp,Ngay
-from SanPham,ThanhPham
-
-Where	SanPham.MASP = ThanhPham.MASP and MONTH(Ngay)=2 and YEAR(Ngay)=2007 and
-		ThanhPham.Ngay = (Select Max(E.Ngay)
-											From	ThanhPham E, SanPham F
-											Where	SanPham.MASP = ThanhPham.MASP and MONTH(Ngay)=2 and YEAR(Ngay)=2007)
+Select	*
+From	HangHoa 
+Where	MAHH NOT IN (	Select	A.MaHH
+						From	HangHoa A, KhaNangCC B
+						Where	A.MAHH = B.MAHH )
 --9)
-select Ho+' '+ten,SoLuong,TenSP
-from CongNhan,ThanhPham,SanPham
-
-Where	SanPham.MASP = ThanhPham.MASP and CongNhan.MACN=ThanhPham.MACN and
-		ThanhPham.SoLuong = (Select Max(E.SoLuong)
-											From	ThanhPham E, SanPham F
-											Where	SanPham.MASP = ThanhPham.MASP and TenSP=N'Chén')
+select TenHH,Sum(SoLuong) as TongSoLuong
+from HangHoa ,CT_HoaDon
+where HangHoa.MAHH = CT_HoaDon.MAHH
+group by TenHH 
+having sum (SoLuong)>= all
+(select sum(B.SoLuong) from HangHoa A, CT_HoaDon B
+where A.MAHH= B.MAHH 
+group by a.TenHH)
 --10)
-select Ho+' '+ten as hoten,TienCong ,Ngay
-from CongNhan,SanPham,ThanhPham
-where CongNhan.MACN=ThanhPham.MACN and CongNhan.MACN = 'CN002' and SanPham.MASP=ThanhPham.MASP and MONTH(Ngay)=2 and YEAR(Ngay)=2006
+select TenHH,Sum(SoLuong) as TongSoLuong
+from HangHoa ,CT_HoaDon
+where HangHoa.MAHH = CT_HoaDon.MAHH
+group by TenHH 
+having sum (SoLuong)<= all
+(select sum(B.SoLuong) from HangHoa A, CT_HoaDon B
+where A.MAHH= B.MAHH 
+group by a.TenHH)
 --11)
-Select	 a.MACN,ho+' '+ten as Hoten, COUNT( MASP) As SanPham
-From	CongNhan A, ThanhPham C
-Where	A.MACN = C.MACN
-Group by	A.MACN, Ho,Ten
-Having	COUNT( DISTINCT MaSP) >= 3
+select HoaDon.SOHD,NgayLapHD,MaDT
+from HoaDon,CT_HoaDon
+where HoaDon.SOHD=CT_HoaDon.SOHD
+group by HoaDon.SOHD, NgayLapHD,MADT
+having sum (SoLuong)>= all
+(select sum(B.SoLuong)
+from HoaDon A, CT_HoaDon B
+where A.SOHD=B.SOHD
+group by A.SOHD)
 --12)
-UPDATE SanPham
-SET TienCong = 21000
-WHERE MASP = 'SP003' ;
-UPDATE SanPham
-SET TienCong = 26000
-WHERE MASP = 'SP004' ;
-select * from SanPham
+select * from HangHoa A
+where A.MAHH not in
+(select A.MAHH 
+from HangHoa A, HoaDon B, CT_HoaDon C
+Where A.MAHH = c.MAHH and B.SOHD = C.SOHD and MONTH(NgayLapHD) = 1 and YEAR(NgayLapHD)=2006)
 --13)
+select * from HangHoa A
+where A.MAHH not in
+(select A.MAHH 
+from HangHoa A, HoaDon B, CT_HoaDon C
+Where A.MAHH = c.MAHH and B.SOHD = C.SOHD and MONTH(NgayLapHD) = 6 and YEAR(NgayLapHD)=2006)
+--14)
+select Ten,count(CT_HoaDon.SOHD) as SoMatHang
+from DoiTac,HoaDon,CT_HoaDon
+where DoiTac.MADT=HoaDon.MADT and HoaDon.SOHD=CT_HoaDon.SOHD
+group by DoiTac.Ten,Ct_HoaDon.SOHD
+--15)
+select TenHH,Ten
+from DoiTac,HangHoa,KhaNangCC
+where DoiTac.MADT=KhaNangCC.MADT and HangHoa.MAHH=KhaNangCC.MAHH
+--16)
+select Ten,count(CT_HoaDon.SOHD) as SoGiaoDich
+from DoiTac ,CT_HoaDon,HoaDon
+where DoiTac.MADT = HoaDon.MADT and HoaDon.SOHD= CT_HoaDon.SOHD
+group by Ten 
+having count (CT_HoaDon.SOHD)>= all
+(select count(CT_HoaDon.SOHD) from CT_HoaDon , HoaDon  , DoiTac 
+where DoiTac.MADT = HoaDon.MADT and HoaDon.SOHD= CT_HoaDon.SOHD
+group by DoiTac.Ten)
+--17)
+select sum(DonGia*SoLuong) as TongDoanhThu
+from CT_HoaDon,HoaDon
+where HoaDon.SOHD=CT_HoaDon.SOHD and year(NgayLapHD) = 2006
+--18)
+select TenHH,count(CT_HoaDon.Soluong) as SoGiaoDich
+from HangHoa ,CT_HoaDon,HoaDon
+where  HoaDon.SOHD= CT_HoaDon.SOHD and HangHoa.MAHH = CT_HoaDon.MAHH
+group by TenHH 
+having count (CT_HoaDon.Soluong)>= all
+(select count(CT_HoaDon.Soluong) from CT_HoaDon , HoaDon  , HangHoa
+where HoaDon.SOHD= CT_HoaDon.SOHD and HangHoa.MAHH = CT_HoaDon.MAHH
+group by TenHH )
+--19)
+select HangHoa.MAHH, TenHH,DVT,sum(SoLuong) as TongSoLuong , sum(DonGia*SoLuong) as TongDoanhThu
+from HangHoa,HoaDon,CT_HoaDon
+where HoaDon.SOHD = CT_HoaDon.SOHD and HangHoa.MAHH=CT_HoaDon.MAHH and MONTH(NgayLapHD) = 5 and YEAR(NgayLapHD) = 2006
+group by HangHoa.MAHH, TenHH,DVT,SoLuong  
+--20)
+select HangHoa.MAHH,TenHH
+from HangHoa ,CT_HoaDon,HoaDon
+where  HoaDon.SOHD= CT_HoaDon.SOHD and HangHoa.MAHH = CT_HoaDon.MAHH
+group by HangHoa.MAHH,TenHH
+having count (CT_HoaDon.Soluong)>= all
+(select count(CT_HoaDon.Soluong) from CT_HoaDon , HoaDon  , HangHoa
+where HoaDon.SOHD= CT_HoaDon.SOHD and HangHoa.MAHH = CT_HoaDon.MAHH
+group by HangHoa.MAHH,TenHH)
+--21)
 
-INSERT INTO CongNhan(MACN,Ho,Ten,Phai,NgaySinh,MaTSX) VALUES ( 'CN006',N'Lê Thị',N'Lan',N'Nữ',Null,N'TS02')
 --Aa
-create function fn_TongCongNhan1To(@Matsx char(5)) returns int
+create function fn_TongSoLuongNhap(@bd datetime,@kt datetime) returns int
 As
 Begin
-	declare @TongCongNhan int
-	if exists (select * from ToSanXuat where MaTSX = @Matsx) 
-		Begin
-
-		select @TongCongNhan = count(MACN)
-		from	ToSanXuat A, CongNhan B	
-		where	A.MaTSX = B.MaTSX and B.MaTSX = @Matsx
-		End	
-	 	
-return  @TongCongNhan
+	declare @TongSoLuongNhap int
+	
+	select  @TongSoLuongNhap = sum(SoLuong)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%N%' and NgayLapHD between @bd and @kt
+return @TongSoLuongNhap
 End
---- thử nghiệm hàm-------
-print dbo.fn_TongCongNhan1To('TS01')
-print dbo.fn_TongCongNhan1To('TS02')
+--- thu nghiem ham-------
+set dateformat dmy
+print dbo.fn_TongSoLuongNhap('1/1/2006','15/7/2006')
 --Ab
-create function fn_TongThanhPham1Thang(@MaSP char(6),@bd datetime,@kt datetime) returns int
+create function fn_TongSoLuongXuat(@bd datetime,@kt datetime) returns int
 As
 Begin
-	declare @TongThanhPham int
-	if exists (select * from ThanhPham where MASP = @MaSP) 
-		Begin
-		
-		select @TongThanhPham = sum(SoLuong)
-		from	SanPham A, ThanhPham B	
-		where	A.MASP = B.MASP	 and B.MASP = @MaSP and Ngay between @bd and @kt
-		End	
-	 	
-return   @TongThanhPham 
+	declare @TongSoLuongXuat int
+	
+	select  @TongSoLuongXuat = sum(SoLuong)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%X%' and NgayLapHD between @bd and @kt
+return  @TongSoLuongXuat
 End
---- thử nghiệm hàm------- 
+--- thu nghiem ham-------
 set dateformat dmy
-print dbo.fn_TongThanhPham1Thang('SP001','1/2/2007','28/2/2007')
+print dbo.fn_TongSoLuongXuat('1/1/2006','15/7/2006')
 --Ac
-create function fn_TongTienCong1Thang(@maCN char(6),@bd datetime,@kt datetime) returns int
+create function fn_TongDoanhThu(@thang int) returns int
 As
 Begin
-	declare @TongTienCong int
-	if exists (select * from ThanhPham where MACN = @maCN) 
-		Begin
-		
-		select @TongTienCong = sum(SoLuong* TienCong)
-		from	CongNhan A, ThanhPham B	,SanPham C
-		where	A.MACN = B.MACN	 and B.MASP = C.MASP and B.MACN = @maCN and Ngay between @bd and @kt
-		End	
-	 	
-return  @TongTienCong
+	declare @TongDoanhThu int
+	
+	select  @TongDoanhThu = sum(SoLuong*DonGia)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%X%' and Month(NgayLapHD)= @thang
+return  @TongDoanhThu
 End
---- thử nghiệm hàm------- 
+--- thu nghiem ham-------
 set dateformat dmy
-print dbo.fn_TongTienCong1Thang('CN001','1/2/2007','28/2/2007')
+print dbo.fn_TongDoanhThu(6)
 --Ad
-create function fn_TongThuNhap1Nam(@maTSX char(5),@bd datetime,@kt datetime) returns int
+create function fn_TongDoanhThuMotMatHang(@Mahh char (6),@bd datetime ,@kt datetime) returns int
 As
 Begin
-	declare @TongThuNhap int
-	if exists (select * from ToSanXuat where MaTSX = @maTSX) 
-		Begin
-		
-		select @TongThuNhap = sum(SoLuong* TienCong)
-		from	ToSanXuat A , ThanhPham B	,SanPham C , CongNhan D
-		where A.MaTSX = D.MaTSX and b.MASP = C.MASP and  D.MACN = B.MACN and A.MaTSX = @maTSX and Ngay between   @bd and @kt
-		End	
-	 	
-return  @TongThuNhap
+	declare @TongDoanhThuHang int
+	
+	select @TongDoanhThuHang = sum(SoLuong*DonGia)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%X%' and A.MAHH = @Mahh and NgayLapHD  between @bd and @kt
+return  @TongDoanhThuHang
 End
---- thử nghiệm hàm------- 
+--- thu nghiem ham-------
 set dateformat dmy
-print dbo.fn_TongThuNhap1Nam('TS01','1/1/2007','30/12/2007')
+print dbo.fn_TongDoanhThuMotMatHang('CPU01','1/4/2006','30/6/2006')
 --Ae
- create function fn_TongSanLuongTrong1ThoiGian(@MaSP char(6) ,@bd datetime, @kt datetime) returns int
- as
- begin
-	declare @TongSanLuong int
-		if exists (select * from SanPham where MASP = @MaSP) 
-	begin
-		select @TongSanLuong = sum(SoLuong) 
-		from ThanhPham B
-		where B.MASP =@MaSP and Ngay between @bd and @kt
-	end
-	return @TongSanLuong
- end
+create function fn_TongTienNhapHangTrongThoiGianChoTruoc(@bd datetime ,@kt datetime) returns int
+As
+Begin
+	declare @TongTienNhapHang int
+	
+	select @TongTienNhapHang  = sum(SoLuong*DonGia)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD like '%N%'and NgayLapHD  between @bd and @kt
+return  @TongTienNhapHang 
+End
+--- thu nghiem ham-------
+set dateformat dmy
+print dbo.fn_TongTienNhapHangTrongThoiGianChoTruoc('1/1/2006','30/1/2006')
+--Af
+create function fn_TongTienHoaDon(@SoHd char(6)) returns int
+As
+Begin
+	declare @TongTienHoaDon int
+	if exists (select * from HoaDon where SOHD = @SoHd) 
+	select @TongTienHoaDon = sum(SoLuong*DonGia)
+	from	CT_HoaDon A, HoaDon B 	
+	where	A.SOHD = B.SOHD and B.SOHD = @SoHd
+return  @TongTienHoaDon 
+End
+--- thu nghiem ham-------
+print dbo.fn_TongTienHoaDon('X0003')
+--Ba)
+create PROC usp_UpdateSoLuongTon
+	@SoLuongTon int,
+	@MaHH char (6)	
+AS
+	If EXISTS(SELECT * FROM HangHoa WHERE MAHH = @MaHH)
+		BEGIN		
+		 update HangHoa set SoLuongTon = @SoLuongTon where MAHH = @MaHH
+		END
+	ELSE
+	PRINT N'Không có mặt hàng hóa ' + @MaHH + '.'
+GO
 
- print dbo.fn_TongSanLuongTrong1ThoiGian('SP001','01/02/2007','14/02/2007')
- --Ba)
- create proc usp_InDanhSachCongNhan
- @MaTSX char(5) 
+EXEC usp_UpdateSoLuongTon 60 , 'CPU01'
+select * from HangHoa
+--Bb)
+create PROC usp_UpdateMotHoaDon
+	@SoHD CHAR(6),
+	@Tong int
+AS
+	If EXISTS(SELECT * FROM HoaDon WHERE SoHD = @SoHD)
+		BEGIN		
+		 update HoaDon set TongTG = @Tong where SOHD = @SoHD
+		END
+	ELSE
+	PRINT N'Không có mặt hàng hóa đơn ' + @SoHD + '.'
+GO
+
+EXEC usp_UpdateMotHoaDon'N0001',1000
+select * from HoaDon
+--Bc)
+ create proc usp_InHoaDon
+ @soHD char(6) 
  as
  begin
-	if exists(select * from CongNhan where MaTSX = @MaTSX)
+	if exists(select * from CT_HoaDon where SOHD = @soHD)
 		begin 
 			select * 
-			from CongNhan A
-			where A.MaTSX = @MaTSX
+			from CT_HoaDon A
+			where A.SOHD = @soHD
 		end
 	else 
-		print N'Tổ sản xuất không tồn tại'
+		print N'Hóa Đơn không tồn tại'
  end
 
- exec usp_InDanhSachCongNhan 'TS01'
-  exec usp_InDanhSachCongNhan 'TS02'
-  --Bb)
-   create proc usp_InBangChamCong 
-@MaCN char(5)
- as
- begin
-	if exists(select * from CongNhan where MaCN = @MaCN)
-		begin 
-			select TenSP, DVT, SoLuong, TienCong, (SoLuong * TienCong) as ThanhTien
-			from SanPham A, ThanhPham B
-			where A.MaSP = B.MaSP and MaCN = @MaCN
-		end
-	else 
-		print N'Công nhân không tồn tại'
- end
+ exec usp_InHoaDon 'N0001'
 
- exec usp_InBangChamCong 'CN001' 
+
